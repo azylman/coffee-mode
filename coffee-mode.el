@@ -227,6 +227,29 @@ called `coffee-compiled-buffer-name'."
 ;; Define Language Syntax
 ;;
 
+;; JavaScript Keywords
+(defvar coffee-js-keywords
+      '("if" "else" "new" "return" "try" "catch"
+        "finally" "throw" "break" "continue" "for" "in" "while"
+        "delete" "instanceof" "typeof" "switch" "super" "extends"
+        "class" "until" "loop"))
+
+;; Reserved keywords either by JS or CS.
+(defvar coffee-js-reserved
+      '("case" "default" "do" "function" "var" "void" "with"
+        "const" "let" "debugger" "enum" "export" "import" "native"
+        "__extends" "__hasProp"))
+
+;; CoffeeScript keywords.
+(defvar coffee-cs-keywords
+      '("then" "unless" "and" "or" "is"
+        "isnt" "not" "of" "by" "where" "when"))
+
+(defvar coffee-all-keywords (append
+                             coffee-js-reserved
+                             coffee-js-keywords
+                             coffee-cs-keywords))
+
 ;; String literals
 (defvar coffee-string-regexp "\"\\([^\\]\\|\\\\.\\)*?\"\\|'\\([^\\]\\|\\\\.\\)*?'")
 
@@ -256,32 +279,18 @@ called `coffee-compiled-buffer-name'."
 (defvar coffee-regexp-regexp "\\/\\(\\\\.\\|\\[\\(\\\\.\\|.\\)+?\\]\\|[^/]\\)+?\\/")
 
 ;; Function member invocation
-(defvar coffee-function-invoc-regex "\\.([\\w]+)[\\(\\s]+[^=]")
-
-;; JavaScript Keywords
-(defvar coffee-js-keywords
-      '("if" "else" "new" "return" "try" "catch"
-        "finally" "throw" "break" "continue" "for" "in" "while"
-        "delete" "instanceof" "typeof" "switch" "super" "extends"
-        "class" "until" "loop"))
-
-;; Reserved keywords either by JS or CS.
-(defvar coffee-js-reserved
-      '("case" "default" "do" "function" "var" "void" "with"
-        "const" "let" "debugger" "enum" "export" "import" "native"
-        "__extends" "__hasProp"))
-
-;; CoffeeScript keywords.
-(defvar coffee-cs-keywords
-      '("then" "unless" "and" "or" "is"
-        "isnt" "not" "of" "by" "where" "when"))
+;; (defvar coffee-function-invoc-regex "\\.\\(\\w+\\)[\\( ]+[^=]")
+(defvar coffee-function-invoc-regex (concat
+                                     "\\.\\(\\w+\\)[\\( ]+[^"
+                                     (mapconcat 'identity
+                                                (append
+                                                 coffee-all-keywords
+                                                 '("="))
+                                                "\\|")
+                                     "]"))
 
 ;; Regular expression combining the above three lists.
-(defvar coffee-keywords-regexp (regexp-opt
-                                (append
-                                 coffee-js-reserved
-                                 coffee-js-keywords
-                                 coffee-cs-keywords) 'words))
+(defvar coffee-keywords-regexp (regexp-opt coffee-all-keywords 'words))
 
 
 ;; Create the list for font-lock. Each class of keyword is given a
