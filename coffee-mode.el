@@ -281,11 +281,11 @@ called `coffee-compiled-buffer-name'."
 ;; Function member invocation
 ;; (defvar coffee-function-invoc-regex "\\.\\(\\w+\\)[\\( ]+[^=]")
 (defvar coffee-function-invoc-regex (concat
-                                     "\\.\\(\\w+\\)[\\( ]+[^"
+                                     "\\(\\w+\\)[\\( ]+[^"
                                      (mapconcat 'identity
                                                 (append
                                                  coffee-all-keywords
-                                                 '("=" ">" ">=" "<" "<="))
+                                                 '("=" ">" ">=" "<" "<=" "+" "-" "=" "+=" "-="))
                                                 "\\|")
                                      "]"))
 
@@ -306,9 +306,9 @@ called `coffee-compiled-buffer-name'."
     (,coffee-regexp-regexp . font-lock-constant-face)
     (,coffee-boolean-regexp . font-lock-constant-face)
     (,coffee-lambda-regexp . (2 font-lock-function-name-face))
-    (,coffee-function-invoc-regex . (1 font-lock-function-name-face))
     (,coffee-keywords-regexp . font-lock-keyword-face)
-    (,coffee-var-assign-regexp . (1 font-lock-type-face))))
+    (,coffee-var-assign-regexp . (1 font-lock-type-face))
+    (,coffee-function-invoc-regex . (1 font-lock-function-name-face))))
 
 ;;
 ;; Helper Functions
