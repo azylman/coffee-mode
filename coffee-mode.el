@@ -285,7 +285,7 @@ called `coffee-compiled-buffer-name'."
                                      (mapconcat 'identity
                                                 (append
                                                  coffee-all-keywords
-                                                 '("="))
+                                                 '("=" ">" ">=" "<" "<="))
                                                 "\\|")
                                      "]"))
 
