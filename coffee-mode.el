@@ -239,6 +239,10 @@ called `coffee-compiled-buffer-name'."
 ;; Assignment
 (defvar coffee-assign-regexp "\\(\\(\\w\\|\\.\\|_\\|$\\)+?\s*\\):")
 
+;; Variable assignment, someVar = something, someObj.member = something
+;; or [var1, var2] = something
+(defvar coffee-var-assign-regexp "\\s *\\(.+\\)\\s *=")
+
 ;; Lambda
 (defvar coffee-lambda-regexp "\\((.+)\\)?\\s *\\(->\\|=>\\)")
 
@@ -289,7 +293,9 @@ called `coffee-compiled-buffer-name'."
     (,coffee-assign-regexp . font-lock-type-face)
     (,coffee-regexp-regexp . font-lock-constant-face)
     (,coffee-boolean-regexp . font-lock-constant-face)
-    (,coffee-keywords-regexp . font-lock-keyword-face)))
+    (,coffee-lambda-regexp . (2 font-lock-function-name-face))
+    (,coffee-keywords-regexp . font-lock-keyword-face)
+    (,coffee-var-assign-regexp . (1 font-lock-type-face))))
 
 ;;
 ;; Helper Functions
@@ -558,6 +564,9 @@ previous line."
 
   ;; code for syntax highlighting
   (setq font-lock-defaults '((coffee-font-lock-keywords)))
+
+  ;; treat "_" as part of a word
+  (modify-syntax-entry ?_ "w" coffee-mode-syntax-table)
 
   ;; perl style comment: "# ..."
   (modify-syntax-entry ?# "< b" coffee-mode-syntax-table)
